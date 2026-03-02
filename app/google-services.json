@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "792770656497",
+    "project_id": "fir-test-ff83d",
+    "storage_bucket": "fir-test-ff83d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792770656497:android:b05af3abfcd90a50da9150",
+        "android_client_info": {
+          "package_name": "com.example.roomdatabasecompose"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX2pbHSx6sX0PJ_lh3YXhudQ63WTHxYj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
