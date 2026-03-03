@@ -35,11 +35,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
+import com.example.roomdatabasecompose.application.MyApplication
 import com.example.roomdatabasecompose.database.StudentDatabase
 import com.example.roomdatabasecompose.model.Students
+import com.example.roomdatabasecompose.remoteconfig.RemoteConfigManager
 import com.example.roomdatabasecompose.ui.theme.RoomDatabaseComposeTheme
 import com.example.roomdatabasecompose.viewmodel.StudentViewModel
 import com.google.firebase.Firebase
+import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.analytics
 import kotlinx.coroutines.launch
 
@@ -48,6 +51,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val viewModel: StudentViewModel by viewModels()
+
+        Firebase.analytics.logEvent("app_start", null)
         setContent {
             RoomDatabaseComposeTheme {
                 StudentList(viewModel)
@@ -140,10 +145,20 @@ fun DataForm(onSave: (Students) -> Unit) {
                 onSave(newStudents)
                 name = ""; section = ""; rollNo = ""
             }
-            Firebase.analytics.logEvent("save_btn_click",null)
+//            throw RuntimeException("Test Crash")
+//            Firebase.analytics.logEvent("save_btn_click",null)
         }, Modifier.width(100.dp)) {
-            Text("Save")
+            Text(RemoteConfigManager.changeBtnText())
         }
+
+        if (RemoteConfigManager.shouldShowExtraButton()){
+            Spacer(Modifier.padding(10.dp))
+
+            Button(onClick = {}, Modifier.width(150.dp)) {
+                Text("Extra Button")
+            }
+        }
+
     }
 }
 
