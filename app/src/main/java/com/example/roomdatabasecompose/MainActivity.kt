@@ -1,10 +1,13 @@
 package com.example.roomdatabasecompose
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,12 +50,22 @@ import com.google.firebase.analytics.analytics
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted -> if (isGranted) { } }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val viewModel: StudentViewModel by viewModels()
 
+
         Firebase.analytics.logEvent("app_start", null)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
         setContent {
             RoomDatabaseComposeTheme {
                 StudentList(viewModel)
@@ -151,7 +164,7 @@ fun DataForm(onSave: (Students) -> Unit) {
             Text(RemoteConfigManager.changeBtnText())
         }
 
-        if (RemoteConfigManager.shouldShowExtraButton()){
+        if (RemoteConfigManager.shouldShowExtraButton()) {
             Spacer(Modifier.padding(10.dp))
 
             Button(onClick = {}, Modifier.width(150.dp)) {
@@ -217,10 +230,6 @@ fun StudentItem(students: Students) {
         )
     }
 }
-
-
-
-
 
 
 @Preview(showBackground = true)
